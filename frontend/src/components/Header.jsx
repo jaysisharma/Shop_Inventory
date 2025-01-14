@@ -7,7 +7,7 @@ const Header = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/stats');
+        const response = await axios.get('https://shop-inventory-rorw.onrender.com/api/stats');
         const fetchedStats = [
           { title: 'Total Products', value: response.data.totalProducts },
           { title: 'Total Sales (Monthly)', value: `NPR ${response.data.totalSales.toLocaleString()}` },

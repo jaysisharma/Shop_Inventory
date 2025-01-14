@@ -17,7 +17,7 @@ const ProductDetailPage = () => {
       try {
         setLoading(true);
         setError(null);
-        const response = await axios.get(`http://localhost:4000/api/products/${productId}`);
+        const response = await axios.get(`https://shop-inventory-rorw.onrender.com/api/products/${productId}`);
         setProduct(response.data.product);
       } catch (error) {
         setError('Failed to load product details. Please try again later.');
@@ -39,7 +39,7 @@ const ProductDetailPage = () => {
     }
 
     try {
-      const response = await axios.post(`http://localhost:4000/api/products/${productId}/sell`, {
+      const response = await axios.post(`https://shop-inventory-rorw.onrender.com/api/products/${productId}/sell`, {
         sellPrice: Number(sellPrice),
       });
 

@@ -12,7 +12,7 @@ const useFetchProducts = (filter, currentPage) => {
       setLoading(true);
       setError(null); // Reset error state before the fetch
       try {
-        const response = await axios.get('http://localhost:4000/api/products', {
+        const response = await axios.get('https://shop-inventory-rorw.onrender.com/api/products', {
           params: {
             ...filter,
             page: currentPage,

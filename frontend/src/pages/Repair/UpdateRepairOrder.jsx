@@ -22,7 +22,7 @@ const UpdateRepairOrder = () => {
     const fetchRepairOrder = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4000/api/repair-services/${id}`
+          `https://shop-inventory-rorw.onrender.com/api/repair-services/${id}`
         );
         console.log("Fetched data:", response.data.data); // Log the fetched data to ensure it's correct
         const data = response.data;
@@ -202,7 +202,7 @@ const UpdateRepairOrder = () => {
       console.log(formData);
 
       const response = await axios.post(
-        "http://localhost:4000/api/repair-services/",
+        "https://shop-inventory-rorw.onrender.com/api/repair-services/",
         formData
       );
 

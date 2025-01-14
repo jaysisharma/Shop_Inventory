@@ -87,7 +87,7 @@ const AddProductForm = () => {
       console.log(productData);
 
       // Send product data to backend API
-      const response = await axios.post("http://localhost:4000/api/products", productData, {
+      const response = await axios.post("https://shop-inventory-rorw.onrender.com/api/products", productData, {
         headers: {
           "Content-Type": "application/json",
         },

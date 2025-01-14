@@ -93,7 +93,7 @@ const handleSubmit = async (e) => {
     console.log(secondHandProductData)
 
     // Send product data to backend API
-    const response = await axios.post("http://localhost:4000/api/second-hand-products", secondHandProductData, {
+    const response = await axios.post("https://shop-inventory-rorw.onrender.com/api/second-hand-products", secondHandProductData, {
       headers: {
         "Content-Type": "application/json",
       },

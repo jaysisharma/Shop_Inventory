@@ -22,7 +22,7 @@ const EditProduct = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/api/products/${productId}`);
+        const response = await axios.get(`https://shop-inventory-rorw.onrender.com/api/products/${productId}`);
         setProduct(response.data);
       } catch (error) {
         setError('Failed to load product details.');
@@ -94,7 +94,7 @@ const EditProduct = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:4000/api/products/${productId}`,
+        `https://shop-inventory-rorw.onrender.com/api/products/${productId}`,
         updatedProduct
       );
       alert('Product Updated Successfully');

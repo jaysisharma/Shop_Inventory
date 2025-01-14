@@ -25,7 +25,7 @@ const EditSecondHandProduct = () => {
   useEffect(() => {
     const fetchProductData = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/api/second-hand-products/${productId}`);
+        const response = await axios.get(`https://shop-inventory-rorw.onrender.com/api/second-hand-products/${productId}`);
         console.log(response.data);
         setFormData(response.data.data);
         setImagePreviews(response.data.data.images); // Set existing image URLs to show them as previews
@@ -110,7 +110,7 @@ const EditSecondHandProduct = () => {
 
       // Send updated product data to backend API
       const response = await axios.put(
-        `http://localhost:4000/api/second-hand-products/${productId}`,
+        `https://shop-inventory-rorw.onrender.com/api/second-hand-products/${productId}`,
         secondHandProductData,
         {
           headers: {

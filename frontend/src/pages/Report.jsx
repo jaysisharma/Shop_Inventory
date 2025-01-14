@@ -14,7 +14,7 @@ const SalesReport = () => {
     const fetchReport = async () => {
       try {
         const response = await fetch(
-          "http://localhost:4000/api/products/sales/report"
+          "https://shop-inventory-rorw.onrender.com/api/products/sales/report"
         );
         if (!response.ok) {
           throw new Error("Failed to fetch sales report");
@@ -35,7 +35,7 @@ const SalesReport = () => {
     const fetchYearReport = async () => {
       try {
         const response = await fetch(
-          "http://localhost:4000/api/products/sales/year-report"
+          "https://shop-inventory-rorw.onrender.com/api/products/sales/year-report"
         );
         if (!response.ok) {
           throw new Error("Failed to fetch current year sales report");
@@ -54,7 +54,7 @@ const SalesReport = () => {
     const fetchRepairRevenue = async () => {
       try {
         const response = await fetch(
-          "http://localhost:4000/api/repair-services/total-revenue"
+          "https://shop-inventory-rorw.onrender.com/api/repair-services/total-revenue"
         );
         if (!response.ok) {
           throw new Error("Failed to fetch repair services revenue");

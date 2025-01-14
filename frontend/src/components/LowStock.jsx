@@ -12,7 +12,7 @@ const LowStock = () => {
     const fetchLowStockProducts = async () => {
       try {
         const response = await fetch(
-          "http://localhost:4000/api/products/products/low-stock"
+          "https://shop-inventory-rorw.onrender.com/api/products/products/low-stock"
         );
         if (!response.ok) {
           throw new Error("No Products On Low Stock.");

@@ -175,7 +175,7 @@ const DashboardForm = () => {
     setIsLoading(true);
 
     try {
-      await axios.post("http://localhost:4000/api/repair-services/", formData);
+      await axios.post("https://shop-inventory-rorw.onrender.com/api/repair-services/", formData);
 
       setIsLoading(false);
       generatePDF();

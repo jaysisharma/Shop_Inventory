@@ -14,7 +14,7 @@ const SecondHandProductMarketplace = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/second-hand-products`, {
+        `https://shop-inventory-rorw.onrender.com/api/second-hand-products`, {
           params: {
             page,
             limit: productsPerPage,
