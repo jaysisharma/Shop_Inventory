@@ -8,7 +8,7 @@ const ActivityFeed = () => {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/activities");
+        const response = await axios.get("https://shop-inventory-rorw.onrender.com/api/activities");
         console.log("Fetched Activities:", response.data); // Debug log
 
         // If response.data contains an 'activities' array, set it accordingly
