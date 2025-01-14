@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import {jsPDF} from "jspdf";
+import { jsPDF } from "jspdf";
 
 const DashboardForm = () => {
   const navigate = useNavigate();
@@ -141,8 +141,12 @@ const DashboardForm = () => {
     doc.text(`Email: ${formData.customerEmail}`, 20, 50);
     doc.text(`Contact Number: ${formData.contactNumber}`, 20, 60);
     doc.text(`Receiver Name: ${formData.receiverName}`, 20, 70);
-    doc.text(`Expected Delivery Date: ${formData.expectedDeliveryDate}`, 20, 80);
-    doc.text(`Expectation Amount: ${formData.expectationAmount}`, 20, 90);
+    doc.text(
+      `Expected Delivery Date: ${formData.expectedDeliveryDate}`,
+      20,
+      80
+    );
+    doc.text(`Expectation Amount: Rs ${formData.expectationAmount}`, 20, 90);
 
     formData.products.forEach((product, index) => {
       const yOffset = 100 + index * 60;
@@ -200,51 +204,50 @@ const DashboardForm = () => {
 
             {/* Customer Details */}
             {/* Customer Details */}
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
-  <div className="space-y-2">
-    <label className="block text-sm font-medium text-gray-700">
-      Customer's Name:
-    </label>
-    <input
-      type="text"
-      name="customerName"
-      value={formData.customerName}
-      onChange={handleInputChange}
-      className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-      placeholder="Enter customer's name"
-    />
-  </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Customer's Name:
+                </label>
+                <input
+                  type="text"
+                  name="customerName"
+                  value={formData.customerName}
+                  onChange={handleInputChange}
+                  className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter customer's name"
+                />
+              </div>
 
-  <div className="space-y-2">
-    <label className="block text-sm font-medium text-gray-700">
-      Contact Email:
-    </label>
-    <input
-      type="email"
-      name="customerEmail"
-      value={formData.customerEmail}
-      onChange={handleInputChange}
-      className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-      placeholder="Enter contact email"
-    />
-  </div>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Contact Email:
+                </label>
+                <input
+                  type="email"
+                  name="customerEmail"
+                  value={formData.customerEmail}
+                  onChange={handleInputChange}
+                  className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter contact email"
+                />
+              </div>
 
-  {/* Contact Number Field */}
-  <div className="space-y-2">
-    <label className="block text-sm font-medium text-gray-700">
-      Contact Number:
-    </label>
-    <input
-      type="tel"
-      name="contactNumber"
-      value={formData.contactNumber}
-      onChange={handleInputChange}
-      className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-      placeholder="Enter contact number"
-    />
-  </div>
-</div>
-
+              {/* Contact Number Field */}
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Contact Number:
+                </label>
+                <input
+                  type="tel"
+                  name="contactNumber"
+                  value={formData.contactNumber}
+                  onChange={handleInputChange}
+                  className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter contact number"
+                />
+              </div>
+            </div>
 
             <div className="mt-4 space-y-2">
               <label className="block text-sm font-medium text-gray-700">
