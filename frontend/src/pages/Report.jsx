@@ -108,7 +108,7 @@ const SalesReport = () => {
                   Total Revenue
                 </h2>
                 <p className="text-2xl font-bold text-green-600">
-                  ${repairRevenue.totalRevenue}
+                  Rs {repairRevenue.totalRevenue}
                 </p>
               </div>
 
@@ -121,7 +121,7 @@ const SalesReport = () => {
                   Total Revenue (This Month)
                 </h2>
                 <p className="text-3xl font-semibold text-green-600">
-                  ${report.totalRevenue}
+                  Rs {report.totalRevenue}
                 </p>
                 <p className="mt-2 text-gray-600">
                   From Sales, Products & Services
@@ -137,7 +137,7 @@ const SalesReport = () => {
                   Total Revenue (This Year) From Sales
                 </h2>
                 <p className="text-3xl font-semibold text-green-600">
-                  ${yearReport?.totalRevenue || "Loading..."}
+                  Rs {yearReport?.totalRevenue || "Loading..."}
                 </p>
               </div>
 
@@ -147,7 +147,7 @@ const SalesReport = () => {
                   From Second-Hand Products
                 </h2>
                 <p className="text-2xl font-bold text-green-600">
-                  ${repairRevenue.totalRevenueFromSecondHandProducts}
+                  Rs {repairRevenue.totalRevenueFromSecondHandProducts}
                 </p>
               </div>
 
@@ -157,7 +157,7 @@ const SalesReport = () => {
                   From Repair Services
                 </h2>
                 <p className="text-2xl font-bold text-green-600">
-                  ${repairRevenue.totalRevenueFromRepairServices}
+                  Rs {repairRevenue.totalRevenueFromRepairServices}
                 </p>
               </div>
             </div>
@@ -189,7 +189,7 @@ const SalesReport = () => {
                   <p className="text-lg text-gray-600">
                     <strong>Total Revenue:</strong>{" "}
                     <span className="text-green-600">
-                      ${report.totalRevenue}
+                      Rs {report.totalRevenue}
                     </span>
                   </p>
                   <p className="text-lg text-gray-600">
@@ -233,7 +233,7 @@ const SalesReport = () => {
                           {product.quantitySold}
                         </td>
                         <td className="border border-gray-200 px-4 py-2">
-                          ${product.revenueGenerated.toFixed(2)}
+                          Rs {product.revenueGenerated.toFixed(2)}
                         </td>
                       </tr>
                     ))}
@@ -267,7 +267,7 @@ const SalesReport = () => {
                   <p className="text-lg text-gray-600">
                     <strong>Total Revenue:</strong>{" "}
                     <span className="text-green-600">
-                      ${yearReport?.totalRevenue || 0}
+                      Rs {yearReport?.totalRevenue || 0}
                     </span>
                   </p>
                   <p className="text-lg text-gray-600">
