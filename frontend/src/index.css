@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add this in your CSS file or inside the global styles */
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in-out;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 300ms ease-in-out;
+}
+
+
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 60px; /* Compact mode */
+  }
+
+  .menu-item span,
+  .submenu-item {
+    display: none; /* Hide text on small screens */
+  }
+}
+
+/* App.css */
+.product-list,
+.product-card,
+.pagination {
+  margin: 20px;
+  padding: 10px;
+}
+
+.product-card {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+.product-list input {
+  margin: 5px;
+}
+
+
+/* Smooth Transition for Collapsible Menu */
+ul > li {
+  transition: all 0.3s ease-in-out; /* Smooth transition for list items */
+}
+
+/* Smooth dropdown transition */
+ul > li > div {
+  transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+ul > li > div.open {
+  max-height: 1000px; /* or any large enough value to allow expansion */
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* Smooth Transition for Dropdown Menus */
+ul > li > div ul {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Hover Effect Smooth Transition */
+a, button {
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover transition */
+}
+
+a:hover, button:hover {
+  background-color: #4a5568; /* Change background color on hover */
+  transform: scale(1.05); /* Slight scaling effect */
+}
+
+
+/* Add these styles to your CSS file or inside a <style> tag */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.notification {
+  animation: slideIn 0.5s ease-out;
+}
+
+.notification.fade-out {
+  animation: fadeOut 1s ease-out forwards;
+}
