@@ -183,7 +183,7 @@ const SalesReport = () => {
               {/* Sales Report in Fieldset */}
               <fieldset className="border-2 border-gray-300 p-6 rounded-lg mb-6">
                 <legend className="text-2xl font-semibold text-gray-800">
-                  Summary
+                  Summary 
                 </legend>
                 <div className="mb-4 space-y-2">
                   <p className="text-lg text-gray-600">
