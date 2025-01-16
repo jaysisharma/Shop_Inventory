@@ -45,8 +45,10 @@ const ActivityFeed = () => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg max-w-full mx-auto">
-      <h3 className="text-2xl font-bold text-gray-800 mb-6">Recent Activities</h3>
+    <div className="bg-white p-4 md:p-6 rounded-lg shadow-lg max-w-full mx-auto">
+      <h3 className="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6 text-center md:text-left">
+        Recent Activities
+      </h3>
 
       {loading ? (
         <div className="flex justify-center items-center">
@@ -57,20 +59,22 @@ const ActivityFeed = () => {
           <p className="text-gray-600">No activities available.</p>
         </div>
       ) : (
-        <ul className="space-y-4 shadow-lg">
+        <ul className="space-y-4">
           {activities.map((activity) => (
             <li
               key={activity._id}
-              className="flex items-center space-x-4 p-4 bg-gray-50 rounded-md shadow-sm hover:bg-gray-100"
+              className="flex flex-col md:flex-row items-start md:items-center space-y-2 md:space-y-0 md:space-x-4 p-4 bg-gray-50 rounded-md shadow-sm hover:bg-gray-100"
             >
               <span
-                className={`text-xl font-semibold ${getActivityColor(activity.type)}`}
+                className={`text-lg md:text-xl font-semibold ${getActivityColor(activity.type)}`}
               >
                 {activity.type.charAt(0).toUpperCase() + activity.type.slice(1)}
               </span>
 
-              <p className="text-gray-800">{activity.message}</p>
-              <span className="text-sm text-gray-500">
+              <p className="flex-1 text-gray-800 text-sm md:text-base">
+                {activity.message}
+              </p>
+              <span className="text-xs md:text-sm text-gray-500 whitespace-nowrap">
                 {new Date(activity.timestamp).toLocaleString()}
               </span>
             </li>

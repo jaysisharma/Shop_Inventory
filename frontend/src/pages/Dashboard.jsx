@@ -1,35 +1,61 @@
 import React, { useState, useEffect } from 'react';
 import ActivityFeed from '../components/ActivityFeed';
-import { useNavigate } from 'react-router-dom'; // Use useNavigate hook
+import { useNavigate } from 'react-router-dom';
+import { fetchYearReport } from '../services/api'; // Import the fetchYearReport function
 
 const Dashboard = () => {
   const [revenue, setRevenue] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [totalSales, setTotalSales] = useState(0);
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
 
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
 
-  // Simulate fetching data
+  // Fetch data when the component mounts
   useEffect(() => {
     const fetchDashboardData = async () => {
-      // Replace with actual API calls to fetch data
-      setRevenue(50000);  // Example total revenue
-      setTotalProducts(320);  // Example total products sold
-      setTotalSales(450);  // Example total sales transactions
+      try {
+        setLoading(true);
+
+        // Fetch year report data
+        const yearReport = await fetchYearReport();
+
+        // Update state with fetched data
+        setRevenue(yearReport.totalRevenue);
+        setTotalProducts(yearReport.totalItemsSold); // Assuming items sold comes from yearReport
+        setTotalSales(yearReport.totalItemsSold); // Adjust if needed
+      } catch (err) {
+        setError(err.message); // Capture any errors
+      } finally {
+        setLoading(false); // End loading
+      }
     };
 
     fetchDashboardData();
   }, []);
 
-  // Handle navigation for creating a repair order
-  const handleCreateRepairOrder = () => {
-    navigate('/repair-orders/create'); // Navigate to create repair order page
-  };
+  // Handle navigation
+  const handleCreateRepairOrder = () => navigate('/repair-orders/create');
+  const handleViewRepairOrders = () => navigate('/repair-orders');
 
-  // Handle navigation for viewing repair orders
-  const handleViewRepairOrders = () => {
-    navigate('/repair-orders'); // Navigate to view repair orders page
-  };
+  // Render loading state
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <p className="text-xl font-semibold text-gray-700">Loading dashboard data...</p>
+      </div>
+    );
+  }
+
+  // Render error state
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <p className="text-xl font-semibold text-red-600">Error: {error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 relative">
@@ -44,7 +70,7 @@ const Dashboard = () => {
         {/* Total Revenue */}
         <div className="bg-white shadow-xl rounded-lg p-6 text-center">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">Total Revenue</h2>
-          <p className="text-3xl font-bold text-green-600">${revenue}</p>
+          <p className="text-3xl font-bold text-green-600">Rs {revenue}</p>
         </div>
 
         {/* Total Products */}
@@ -61,7 +87,7 @@ const Dashboard = () => {
       </div>
 
       {/* Floating Action Buttons */}
-      <div className="absolute bottom-6 right-6 flex flex-col sm:flex-row gap-4">
+      <div className="fixed bottom-6 right-6 flex flex-col sm:flex-row gap-4">
         <button
           onClick={handleCreateRepairOrder}
           className="px-6 py-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-500 transition"

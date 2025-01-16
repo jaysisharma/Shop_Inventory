@@ -3,34 +3,60 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:3000/api"; // Change if your backend URL is different
 
-// API for Repair Services
-export const getRepairServices = async () => {
+
+// src/api.js
+
+// Fetch the sales report for the current month
+export const fetchSalesReport = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/repair-services`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching repair services", error);
-    throw error;
+    const response = await fetch(
+      "https://shop-inventory-rorw.onrender.com/api/products/sales/report"
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch sales report");
+    }
+    return await response.json();
+  } catch (err) {
+    throw new Error(err.message);
   }
 };
 
-export const createRepairService = async (repairService) => {
+// Fetch the sales report for the current year
+export const fetchYearReport = async () => {
   try {
-    const response = await axios.post(`${BASE_URL}/repair-services`, repairService);
-    return response.data;
-  } catch (error) {
-    console.error("Error creating repair service", error);
-    throw error;
+    const response = await fetch(
+      "https://shop-inventory-rorw.onrender.com/api/products/sales/year-report"
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch current year sales report");
+    }
+    return await response.json();
+  } catch (err) {
+    throw new Error(err.message);
   }
 };
 
-// Report API
-export const getRepairServiceReport = async () => {
+// Fetch the repair services revenue
+export const fetchRepairRevenue = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/report`);
+    const response = await fetch(
+      "https://shop-inventory-rorw.onrender.com/api/repair-services/total-revenue"
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch repair services revenue");
+    }
+    return await response.json();
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+
+export const fetchActivities = async () => {
+  try {
+    const response = await axios.get("https://shop-inventory-rorw.onrender.com/api/activities");
     return response.data;
   } catch (error) {
-    console.error("Error fetching repair service report", error);
-    throw error;
+    throw new Error("Error fetching activities: " + error.message);
   }
 };

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { fetchSalesReport, fetchYearReport, fetchRepairRevenue } from "../services/api"; // Import the API functions
 
 const SalesReport = () => {
   const [report, setReport] = useState(null);
@@ -11,61 +12,23 @@ const SalesReport = () => {
 
   // Fetch the sales report for the current month
   useEffect(() => {
-    const fetchReport = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(
-          "https://shop-inventory-rorw.onrender.com/api/products/sales/report"
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch sales report");
-        }
-        const data = await response.json();
-        setReport(data); // Set the report data once fetched
+        const [reportData, yearReportData, repairRevenueData] = await Promise.all([
+          fetchSalesReport(),
+          fetchYearReport(),
+          fetchRepairRevenue(),
+        ]);
+        setReport(reportData); // Set the report data once fetched
+        setYearReport(yearReportData); // Set the year report data once fetched
+        setRepairRevenue(repairRevenueData); // Set the repair revenue once fetched
       } catch (err) {
         setError(err.message); // Set any errors encountered
       } finally {
         setLoading(false); // Stop loading after fetching or error
       }
     };
-    fetchReport(); // Call the function to fetch the report data
-  }, []);
-
-  // Fetch the sales report for the current year
-  useEffect(() => {
-    const fetchYearReport = async () => {
-      try {
-        const response = await fetch(
-          "https://shop-inventory-rorw.onrender.com/api/products/sales/year-report"
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch current year sales report");
-        }
-        const data = await response.json();
-        setYearReport(data); // Set the year report data once fetched
-      } catch (err) {
-        setError(err.message); // Set any errors encountered
-      }
-    };
-    fetchYearReport(); // Call the function to fetch the yearly report data
-  }, []);
-
-  // Fetch the repair services revenue
-  useEffect(() => {
-    const fetchRepairRevenue = async () => {
-      try {
-        const response = await fetch(
-          "https://shop-inventory-rorw.onrender.com/api/repair-services/total-revenue"
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch repair services revenue");
-        }
-        const data = await response.json();
-        setRepairRevenue(data); // Set the repair revenue once fetched
-      } catch (err) {
-        setError(err.message); // Set any errors encountered
-      }
-    };
-    fetchRepairRevenue(); // Call the function to fetch the repair revenue
+    fetchData(); // Call the function to fetch all the report data
   }, []);
 
   // Loading state

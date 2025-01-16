@@ -66,7 +66,7 @@ const RepairOrdersList = () => {
           (statusFilter === "Canceled" && order.repairStatus === "Canceled")
       )
       .filter((order) =>
-        order.customerName?.toLowerCase().includes(searchQuery.toLowerCase())
+        order.contactNumber?.toLowerCase().includes(searchQuery.toLowerCase())
       );
     setFilteredOrders(
       filtered.slice((page - 1) * ordersPerPage, page * ordersPerPage)
@@ -213,7 +213,7 @@ const RepairOrdersList = () => {
 
       {error && <p className="text-red-500">{error}</p>}
 
-      <div className="flex justify-between mb-4">
+      <div className="flex justify-between mb-4 flex-col">
         <div className="flex space-x-2">
           <button
             onClick={() => setStatusFilter("Pending")}
@@ -257,12 +257,16 @@ const RepairOrdersList = () => {
           </button>
         </div>
 
-        <input
-          type="text"
-          placeholder="Search by Customer Name"
-          onChange={(e) => handleSearch(e.target.value)}
-          className="p-2 border rounded-lg w-full max-w-xs"
-        />
+        <div className="flex flex-col sm:flex-row sm:justify-between mb-4 space-y-2 sm:space-y-0">
+          <div className="flex space-x-2">{/* Status Buttons */}</div>
+          <input
+            type="text"
+            placeholder="Search by Contact Number"
+            onChange={(e) => handleSearch(e.target.value)}
+            className="p-2 border rounded-lg w-full sm:max-w-xs"
+            style={{ minWidth: "200px" }}
+          />
+        </div>
       </div>
 
       {isLoading ? (
@@ -495,4 +499,3 @@ const RepairOrdersList = () => {
 };
 
 export default RepairOrdersList;
-
