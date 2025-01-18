@@ -6,6 +6,67 @@ import router from "./productRoutes.js";
 
 const repairRouter = express.Router();
 
+repairRouter.get("/total-repairs-this-month", async (req, res) => {
+  try {
+    // Calculate the start and end of the current month
+    const today = new Date();
+    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0, 23, 59, 59);
+
+    // Query the database for completed repairs this month
+    const completedRepairs = await RepairService.find({
+      repairStatus: "Completed",
+      completionDate: { $gte: startOfMonth, $lte: endOfMonth },
+    });
+
+    // Check if any repairs were found
+    if (!completedRepairs.length) {
+      return res.status(404).json({ message: "No completed repairs this month." });
+    }
+
+    // Calculate total repair cost
+    const totalRepairCost = completedRepairs.reduce(
+      (sum, repair) => sum + (repair.repairCost || 0),
+      0
+    );
+
+    // Send the result
+    res.status(200).json({
+      totalRepairs: completedRepairs.length,
+      totalRepairCost,
+      completedRepairs,
+    });
+  } catch (error) {
+    console.error("Error fetching repairs:", error);
+    res.status(500).json({ message: "Server error.", error: error.message });
+  }
+});
+
+
+repairRouter.get("/total-repairs-count-this-month", async (req, res) => {
+  try {
+    // Calculate the start and end of the current month
+    const today = new Date();
+    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0, 23, 59, 59);
+
+    // Query the database for completed repairs this month
+    const completedRepairs = await RepairService.find({
+      repairStatus: "Completed",
+      completionDate: { $gte: startOfMonth, $lte: endOfMonth },
+    });
+
+    // Return the total count of completed repairs for the current month
+    res.status(200).json({
+      totalRepairs: completedRepairs.length,
+    });
+  } catch (error) {
+    console.error("Error fetching repairs count:", error);
+    res.status(500).json({ message: "Server error.", error: error.message });
+  }
+});
+
+
 // Get all repair services
 repairRouter.get("/", async (req, res) => {
   try {
@@ -221,46 +282,64 @@ repairRouter.put("/:id", async (req, res) => {
   }
 });
 
+
+// Get total repairs completed this month
+
+
+
 // Update repair status by ID
 repairRouter.patch("/:id", async (req, res) => {
   const { id } = req.params;
   const { repairStatus, repairCost } = req.body;
 
-  // Ensure repairStatus is provided
+  // Validate if the repairStatus is provided and valid
   if (!repairStatus) {
     return res.status(400).json({ message: "Repair status is required." });
   }
 
-  // Validate repairCost if provided
+  // Validate if repairCost is a non-negative number if provided
   if (repairCost !== undefined && (isNaN(repairCost) || repairCost < 0)) {
     return res
       .status(400)
       .json({ message: "Repair cost must be a valid non-negative number." });
   }
 
+  // Prepare the update data object
+  const updateData = {
+    repairStatus,
+    ...(repairCost !== undefined && { repairCost }), // Only include repairCost if it's provided
+  };
+
+  // If the status is updated to 'Completed', set the completion date
+  if (repairStatus === "Completed") {
+    updateData.completionDate = new Date(); // Set today's date as the completion date
+  }
+
   try {
+    // Update the repair service by ID with the provided update data
     const updatedOrder = await RepairService.findByIdAndUpdate(
       id,
-      {
-        repairStatus,
-        ...(repairCost !== undefined && { repairCost }), // Only update if repairCost is provided
-      },
+      updateData,
       { new: true } // Return the updated document
     );
 
+    // If no order is found, send a 404 error
     if (!updatedOrder) {
       return res.status(404).json({ message: "Repair order not found." });
     }
 
+    // Successfully updated the order, send the updated order back in the response
     res.status(200).json({
       message: "Repair order updated successfully.",
       data: updatedOrder,
     });
   } catch (error) {
+    // Log the error and send a 500 server error response
     console.error("Error updating repair order:", error);
     res.status(500).json({ message: "Server error." });
   }
 });
+
 
 
 // Delete a repair service by ID

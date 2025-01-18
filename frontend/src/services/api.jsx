@@ -36,6 +36,23 @@ export const fetchYearReport = async () => {
   }
 };
 
+export const fetchMonthlyReport = async () => {
+  try {
+    const response = await fetch(
+      "https://shop-inventory-rorw.onrender.com/api/products/sales/report"
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch current year sales report");
+    }
+    return await response.json();
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+
+
+
 // Fetch the repair services revenue
 export const fetchRepairRevenue = async () => {
   try {
@@ -58,5 +75,20 @@ export const fetchActivities = async () => {
     return response.data;
   } catch (error) {
     throw new Error("Error fetching activities: " + error.message);
+  }
+};
+
+// Fetch total repairs completed this month
+export const fetchTotalRepairsThisMonth = async () => {
+  try {
+    const response = await fetch(
+      "https://shop-inventory-rorw.onrender.com/api/repair/total-repairs-count-this-month"
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch total repairs this month");
+    }
+    return await response.json();
+  } catch (err) {
+    throw new Error(err.message);
   }
 };

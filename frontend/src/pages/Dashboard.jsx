@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import ActivityFeed from '../components/ActivityFeed';
 import { useNavigate } from 'react-router-dom';
-import { fetchYearReport } from '../services/api'; // Import the fetchYearReport function
+import { fetchYearReport, fetchMonthlyReport, fetchTotalRepairsThisMonth } from '../services/api';
 
 const Dashboard = () => {
   const [revenue, setRevenue] = useState(0);
-  const [totalProducts, setTotalProducts] = useState(0);
-  const [totalSales, setTotalSales] = useState(0);
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
+  const [monthlyRevenue, setMonthlyRevenue] = useState(0); // Corrected variable name
+  const [totalRepair, setTotalRepair] = useState(0); // For total repairs this month
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
-  // Fetch data when the component mounts
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
@@ -20,26 +19,28 @@ const Dashboard = () => {
 
         // Fetch year report data
         const yearReport = await fetchYearReport();
-
-        // Update state with fetched data
         setRevenue(yearReport.totalRevenue);
-        setTotalProducts(yearReport.totalItemsSold); // Assuming items sold comes from yearReport
-        setTotalSales(yearReport.totalItemsSold); // Adjust if needed
+        
+        // Fetch monthly report data
+        const monthlyReport = await fetchMonthlyReport();
+        setMonthlyRevenue(monthlyReport.totalRevenue); // Assuming totalRevenue is for the month
+        
+        // Fetch total repairs count for this month
+        const repairCount = await fetchTotalRepairsThisMonth();
+        setTotalRepair(repairCount.totalRepairs); // Assuming totalRepairs is the response field
       } catch (err) {
-        setError(err.message); // Capture any errors
+        setError(err.message);
       } finally {
-        setLoading(false); // End loading
+        setLoading(false);
       }
     };
 
     fetchDashboardData();
   }, []);
 
-  // Handle navigation
   const handleCreateRepairOrder = () => navigate('/repair-orders/create');
   const handleViewRepairOrders = () => navigate('/repair-orders');
 
-  // Render loading state
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -48,7 +49,6 @@ const Dashboard = () => {
     );
   }
 
-  // Render error state
   if (error) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -59,34 +59,21 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 relative">
-      {/* Header */}
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">Welcome to Your Dashboard</h1>
-        <p className="text-lg text-gray-600">Here's a quick overview of your business performance.</p>
-      </header>
-
-      {/* Dashboard Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Total Revenue */}
         <div className="bg-white shadow-xl rounded-lg p-6 text-center">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">Total Revenue</h2>
           <p className="text-3xl font-bold text-green-600">Rs {revenue}</p>
         </div>
-
-        {/* Total Products */}
         <div className="bg-white shadow-xl rounded-lg p-6 text-center">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Total Products Sold</h2>
-          <p className="text-3xl font-bold text-blue-600">{totalProducts}</p>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Total Sales This Month</h2>
+          <p className="text-3xl font-bold text-blue-600">Rs {monthlyRevenue}</p>
         </div>
-
-        {/* Total Sales */}
         <div className="bg-white shadow-xl rounded-lg p-6 text-center">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Total Sales Transactions</h2>
-          <p className="text-3xl font-bold text-yellow-600">{totalSales}</p>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Total Repair This Month</h2>
+          <p className="text-3xl font-bold text-yellow-600">{totalRepair}</p>
         </div>
       </div>
 
-      {/* Floating Action Buttons */}
       <div className="fixed bottom-6 right-6 flex flex-col sm:flex-row gap-4">
         <button
           onClick={handleCreateRepairOrder}
@@ -102,7 +89,6 @@ const Dashboard = () => {
         </button>
       </div>
 
-      {/* Notifications / Updates */}
       <div className="mt-8">
         <ActivityFeed />
       </div>
