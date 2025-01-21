@@ -82,7 +82,7 @@ export const fetchActivities = async () => {
 export const fetchTotalRepairsThisMonth = async () => {
   try {
     const response = await fetch(
-      "https://shop-inventory-rorw.onrender.com/api/repair/total-repairs-count-this-month"
+      "https://shop-inventory-rorw.onrender.com/api/repair-services/total-repairs-count-this-month"
     );
     if (!response.ok) {
       throw new Error("Failed to fetch total repairs this month");

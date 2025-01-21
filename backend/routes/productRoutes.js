@@ -69,6 +69,111 @@ router.get("/sales/report", async (req, res) => {
   }
 });
 
+router.get("/sales/last-month-report", async (req, res) => {
+  try {
+    // Get the current date and calculate last month's start and end dates
+    const today = new Date();
+    const lastMonthStart = new Date(today.getFullYear(), today.getMonth() - 1, 1); // First day of last month
+    const lastMonthEnd = new Date(today.getFullYear(), today.getMonth(), 0); // Last day of last month
+
+    // Fetch sales data for last month
+    const salesLastMonth = await Sales.find({
+      saleDate: { $gte: lastMonthStart, $lte: lastMonthEnd },
+    }).populate("products.productId");
+
+    if (!salesLastMonth.length) {
+      return res.status(404).json({
+        message: "No sales data available for last month.",
+      });
+    }
+
+    let lastMonthRevenue = 0;
+    let lastMonthItemsSold = 0;
+    const lastMonthProductSummary = {};
+
+    salesLastMonth.forEach((sale) => {
+      lastMonthRevenue += sale.totalAmount;
+      sale.products.forEach((item) => {
+        if (!item.productId) {
+          console.error("Missing productId in sale:", item);
+          return;
+        }
+
+        const productId = item.productId._id.toString();
+        const productName = item.productId.name;
+
+        lastMonthItemsSold += item.quantity;
+
+        if (!lastMonthProductSummary[productId]) {
+          lastMonthProductSummary[productId] = {
+            name: productName,
+            quantitySold: 0,
+            revenueGenerated: 0,
+            saleDates: [],
+          };
+        }
+
+        lastMonthProductSummary[productId].quantitySold += item.quantity;
+        lastMonthProductSummary[productId].revenueGenerated +=
+          item.quantity * item.salePrice;
+        lastMonthProductSummary[productId].saleDates.push(sale.saleDate);
+      });
+    });
+
+    const lastMonthReport = {
+      totalRevenue: lastMonthRevenue,
+      totalItemsSold: lastMonthItemsSold,
+      productSummary: Object.values(lastMonthProductSummary),
+      month: lastMonthStart.toLocaleString("default", { month: "long" }),
+      year: lastMonthStart.getFullYear(),
+    };
+
+    // Fetch the current month's sales data
+    const thisMonthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+    const thisMonthEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+    const salesThisMonth = await Sales.find({
+      saleDate: { $gte: thisMonthStart, $lte: thisMonthEnd },
+    }).populate("products.productId");
+
+    if (!salesThisMonth.length) {
+      return res.status(404).json({
+        message: "No sales data available for the current month.",
+      });
+    }
+
+    let thisMonthRevenue = 0;
+    salesThisMonth.forEach((sale) => {
+      thisMonthRevenue += sale.totalAmount;
+    });
+
+    // Calculate percentage increase from last month to this month
+    const revenueIncrease = thisMonthRevenue - lastMonthRevenue;
+    const percentageHike =
+      lastMonthRevenue === 0 ? 0 : (revenueIncrease / lastMonthRevenue) * 100;
+
+    const report = {
+      thisMonth: {
+        totalRevenue: thisMonthRevenue,
+        totalItemsSold: salesThisMonth.reduce(
+          (sum, sale) => sum + sale.products.reduce((acc, item) => acc + item.quantity, 0),
+          0
+        ),
+      },
+      lastMonth: lastMonthReport,
+      percentageHike: percentageHike.toFixed(2), // Round to 2 decimal places
+    };
+
+    res.status(200).json(report);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+
+
+
 router.get("/sales/year-report", async (req, res) => {
   try {
     // Calculate the start and end dates for the current year
