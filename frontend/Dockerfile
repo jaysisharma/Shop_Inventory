@@ -19,7 +19,7 @@ RUN npm run build
 # Stage 2: Serve the production build
 FROM nginx:alpine
 
-# Copy the build folder to the nginx html directory
+# Copy the build folder to the nginx html directory dasboard finalize
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Expose the port
